@@ -40,21 +40,35 @@
     <script>
         var n=1;
         var click=10;
+        var ar=[];
 
     function getproducts(start,end)
     {
         
-        var ar=[]
+        
         fetch("./data.json")
         .then(function(response) {return response.json()})
-        .then(function(jsondata){ JSON.stringify(jsondata);
-            jsondata.forEach(element => {
-                ar.push(element);
-            });
-            console.log(ar);
+        .then(function(jsondata){ 
+            ar=jsondata;
         })
         .then(function(){
-            document.getElementById("tb").innerHTML="";
+            genui(ar,start,end);
+            
+        });
+        
+    }
+    getproducts(0,10);
+
+    function next()
+    {
+        genui(ar,n,click);
+        n=n+10;
+        click=click+10;
+    }
+
+    function genui(ar,start,end)
+    {
+        document.getElementById("tb").innerHTML="";
             for(var i=start;i<=end;i++)
         {
             
@@ -79,13 +93,15 @@
 
             var thumb=document.createElement("td");
             var thumbnail=document.createElement("img");
-            thumbnail.src=ar[i].thumbnailUrl;
+            thumbnail.src=ar[i].thumbnailUrl ;
             thumb.appendChild(thumbnail);
-            ntr.appendChild(thumbnail);
+            ntr.appendChild(thumb);
 
             var shortDe=document.createElement("td");
             shortDe.innerText=ar[i].shortDescription;
             ntr.appendChild(shortDe);
+
+            
 
             var sta=document.createElement("td");
             sta.innerText=ar[i].status;
@@ -119,24 +135,8 @@
 
             document.getElementById("tb").appendChild(ntr);}
             
-            
-        });
-        
     }
-
-    function next()
-    {
-        
-        getproducts(n,click);
-        n=n+10;
-        click=click+10;
-    }
-
     
-       
-    
-    
-    next();
     </script>
 </body>
 </html>
